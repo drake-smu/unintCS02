@@ -10,8 +10,6 @@ hr_definitions_file <- file("data/hr-definitions.rds");
 hr_data <- read_excel("data/raw-client-data.xlsx");
 hr_definitions <- read_excel("data/raw-client-data.xlsx", sheet = 2, col_names = F, trim_ws = T);
 
-hr_definitions <- hr_definitions %>%
-
 
 
 # Save objects
