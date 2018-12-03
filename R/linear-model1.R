@@ -38,15 +38,15 @@ test_df <- factored_df %>%
 		YearsSinceLastPromotion=NULL
 	);
 
-shot_inDark <- function(x){
-	if(x==0) x <- x+1;
-
-	return (log10(x))
-}
-
-
-factored_df <-  factored_df %>%
-	mutate_if(is.numeric , shot_inDark)
+# shot_inDark <- function(x){
+# 	if(x==0) x <- x+1;
+#
+# 	return (log10(x))
+# }
+#
+#
+# factored_df <-  factored_df %>%
+# 	mutate_if(is.numeric , shot_inDark)
 
 equ <-Attrition~.
 model1<-lm(equ,data=factored_df)
@@ -57,19 +57,19 @@ pander(summary(model1))
 model2<-lm(equ,data=test_df)
 pander(summary(model2))
 # coefplot(model2, intercept=FALSE,vertical=FALSE)+theme_few()
-
-
-Training_cor <- factored_df;
-
-Training_cor <- Training_cor %>%
-	mutate(
-		Attrition=factor(Attrition,labels = c("No", "Yes"))
-	)
-
-for(i in 1:ncol(Training_cor)){
-
-	Training_cor[,i]<- as.integer(Training_cor[,i])
-}
-
-corrplot(cor(Training_cor))
-
+#
+#
+# Training_cor <- factored_df;
+#
+# Training_cor <- Training_cor %>%
+# 	mutate(
+# 		Attrition=factor(Attrition,labels = c("No", "Yes"))
+# 	)
+#
+# for(i in 1:ncol(Training_cor)){
+#
+# 	Training_cor[,i]<- as.integer(Training_cor[,i])
+# }
+#
+# corrplot(cor(Training_cor))
+#
