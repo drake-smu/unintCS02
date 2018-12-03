@@ -88,17 +88,23 @@ grid.arrange(agePlot,travelPlot,ratePlot,depPlot,distPlot,eduPlot,edufieldPlot,e
 
 #Missing Value Analysis
 ```{r}
+na_count <- data.frame(sapply(raw, function(y) sum(length(which(is.na(y))))))
+pander(na_count)
 
+#No nulls, it's a miracle!
 ```
-#Feature Engineering
+#Data Refactorization
 ```{r}
+#We did all of our refactorization in another data file. It is read in here and used for further analysis. We leveraged the data description file to redine these new feature. 
 
+fd <-read(factored-definitions)
 ```
 
 
 ```{r}
-monthlyIncPlot
+distPlot
 ```
+
 
 
 #Feature Engineering
