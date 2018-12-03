@@ -24,3 +24,15 @@ model2<-lm(equ,data=df2)
 modsum<-(summary(model2))
 names(model2$coefficients[-1])->nn
 cplo2<-coefplot(model2, intercept=FALSE,vertical=FALSE)+theme_few()+theme(text=element_text(size=8))
+
+featured_df<-readRDS("data/engineered-features.rds")
+featured_df%>%
+	select(Attrition,
+		   OverTime,
+		   IncLevels,
+		   JobLevel,
+		  BusinessTravel, EnvironmentSatisfaction,
+StockOptionLevel,
+	WorkLifeBalance,CompaRatioDep)->df3
+model3<-lm(equ,data=df3)
+cplo3<-coefplot(model3,intercept=F)
