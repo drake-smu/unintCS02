@@ -9,6 +9,7 @@ raw<-readRDS("data/hr-data.rds")
 
 names <- c('WorkLifeBalance' ,'StockOptionLevel','PerformanceRating','JobSatisfaction',
            'RelationshipSatisfaction','JobLevel','JobInvolvement','EnvironmentSatisfaction','Education')
+raw[,names] <- lapply(raw[,names] , factor)
 str(raw)
 
 library(ggplot2)
