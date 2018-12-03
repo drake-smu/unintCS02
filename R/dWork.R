@@ -60,3 +60,6 @@ grid.arrange(marPlot,monthlyIncPlot,monthlyRatePlot,numCompPlot,hourlyPlot,jobIn
 
 
 grid.arrange(agePlot,travelPlot,ratePlot,depPlot,distPlot,eduPlot,edufieldPlot,envPlot,genPlot,ncol=3,top="plots")
+
+na_count <- data.frame(sapply(raw, function(y) sum(length(which(is.na(y))))))
+pander(na_count)
