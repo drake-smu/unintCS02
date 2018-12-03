@@ -1,0 +1,84 @@
+\documentclass{beamer}
+\usepackage{longtable}
+\usepackage{array,booktabs}
+\usepackage{tikz}
+\usepackage{animate}
+\usepackage{outlines}
+\usetheme{Execushares}
+
+\title{Exploring Attrition Data}
+\subtitle{An in-depth Analysis of the Attrition Data Set}
+\author{Unofficial Intelligence}
+\date{\today}
+\begin{document}
+	<<settings, echo=FALSE, message=FALSE>>=
+library(xtable)
+library(ggplot2)
+library(coefplot)
+library(ggthemes)
+# MAKE SURE TO LOOK AT THIS FOR YOUR ROOT DIRECTORY
+knitr::opts_knit$set(root.dir = "C:/unintCS02")
+	opts_chunk$set(cache=T, autodep=TRUE)
+	opts_chunk$set(echo=F,message=F,warning=F)
+	opts_chunk$set(fig.width=3)
+	opts_chunk$set(fig.height=2.5)
+	#opts_chunk$set(background='white')
+	options(tikzDefaultEngine='xetex')
+	aniopts='controls,autoplay,loop'
+	@
+	\setcounter{showProgressBar}{0}
+	\setcounter{showSlideNumbers}{0}
+	
+	\frame{\titlepage}
+	
+	\begin{frame}
+	\frametitle{Executive Summary}
+	\begin{enumerate}[<+->]
+		\item Some plots
+		\item Some Things
+		\item Some models
+		\item Some answers
+	\end{enumerate}
+\end{frame}
+
+	\setcounter{framenumber}{0}
+\setcounter{showProgressBar}{1}
+\setcounter{showSlideNumbers}{1}
+
+	\section{Basic Data Exploration}
+\begin{frame}
+\frametitle{Data Manipulation}
+\begin{enumerate}[<+->]
+	\item Factorize character and scaled variables
+	\item Make Attrition Numeric
+	\item Check for NAs
+\end{enumerate}
+\end{frame}
+\begin{frame}
+<<r plots1, echo=F,include=F>>=
+source('C:/unintCS02/R/dWork.R')
+@
+\frametitle{Attrition}
+\only<1>{%
+	\begin{center}
+	<<r attplot,dev="tikz">>=
+	Attplot
+	 @
+	 \end{center}
+%
+}
+\only<2>{%
+
+	<<r atttable,results='asis'>>=
+	as.data.frame(prop.table(table(raw$Attrition)))->attt
+	colnames(attt)<-c("Attrition","Proportion")
+	table1<-xtable(attt,
+	label='tb:attt',
+	
+	caption="Proportion of Attrition")
+	
+	print(table1,booktabs=T,table.placement='H')
+	@
+	}
+\end{frame}
+\end{document}
