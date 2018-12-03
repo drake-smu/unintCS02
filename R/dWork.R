@@ -40,20 +40,20 @@ monthlyIncPlot <- ggplot(raw,aes(MonthlyIncome,fill=Attrition))+geom_density()+t
 monthlyRatePlot <- ggplot(raw,aes(MonthlyRate,fill=Attrition))+geom_density()+theme_tufte()+scale_fill_few("Dark")
 numCompPlot <- ggplot(raw,aes(NumCompaniesWorked,fill=Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
 
-overTimePlot <- ggplot(raw,aes(OverTime,fill=Attrition))+geom_bar()
-hikePlot <- ggplot(raw,aes(PercentSalaryHike,Attrition))+geom_point(size=4,alpha = 0.01)
-perfPlot <- ggplot(raw,aes(PerformanceRating,fill = Attrition))+geom_bar()
-RelSatPlot <- ggplot(raw,aes(RelationshipSatisfaction,fill = Attrition))+geom_bar()
+overTimePlot <- ggplot(raw,aes(OverTime,fill=Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
+hikePlot <- ggplot(raw,aes(PercentSalaryHike,Attrition))+geom_point(size=4,alpha = 0.01)+theme_tufte()+scale_fill_few("Dark")
+perfPlot <- ggplot(raw,aes(PerformanceRating,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
+RelSatPlot <- ggplot(raw,aes(RelationshipSatisfaction,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
 
-StockPlot <- ggplot(raw,aes(StockOptionLevel,fill = Attrition))+geom_bar()
-workingYearsPlot <- ggplot(raw,aes(TotalWorkingYears,fill = Attrition))+geom_bar()
-TrainTimesPlot <- ggplot(raw,aes(rawTimesLastYear,fill = Attrition))+geom_bar()
-WLBPlot <- ggplot(raw,aes(WorkLifeBalance,fill = Attrition))+geom_bar()
+StockPlot <- ggplot(raw,aes(StockOptionLevel,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
+workingYearsPlot <- ggplot(raw,aes(TotalWorkingYears,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
+TrainTimesPlot <- ggplot(raw,aes(TrainingTimesLastYear,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
+WLBPlot <- ggplot(raw,aes(WorkLifeBalance,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
 
-YearAtComPlot <- ggplot(raw,aes(YearsAtCompany,fill = Attrition))+geom_bar()
-YearInCurrPlot <- ggplot(raw,aes(YearsInCurrentRole,fill = Attrition))+geom_bar()
-YearsSinceProm <- ggplot(raw,aes(YearsSinceLastPromotion,fill = Attrition))+geom_bar()
-YearsCurrManPlot <- ggplot(raw,aes(YearsWithCurrManager,fill = Attrition))+geom_bar()
+YearAtComPlot <- ggplot(raw,aes(YearsAtCompany,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
+YearInCurrPlot <- ggplot(raw,aes(YearsInCurrentRole,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
+YearsSinceProm <- ggplot(raw,aes(YearsSinceLastPromotion,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
+YearsCurrManPlot <- ggplot(raw,aes(YearsWithCurrManager,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Dark")
 
 grid.arrange(marPlot,monthlyIncPlot,monthlyRatePlot,numCompPlot,hourlyPlot,jobInvPlot,jobLevelPlot,jobSatPlot,overTimePlot,hikePlot,perfPlot,RelSatPlot,StockPlot,workingYearsPlot,TrainTimesPlot,WLBPlot,YearAtComPlot,YearInCurrPlot,YearsSinceProm,YearsCurrManPlot,ncol=3,top = "okokok")
 
