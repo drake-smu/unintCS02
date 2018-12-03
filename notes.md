@@ -2,6 +2,7 @@
 
 ## Data stuff  
 
-- [ ] Factorize Columns
-- [ ] Graph frequency/summary to visualize dataset.
+- [X] Factorize Columns
+- [X] Graph frequency/summary to visualize dataset.
 - [ ] Linear Regression stuff... (figure out after first 2)
+- [ ] Permutation tests? Hypothesis testing? 
