@@ -37,7 +37,9 @@ factored_def <- hr_data %>%
 # Reassign Attrition ------------------------------------------------------
 
 factored_def <- factored_def %>%
-	mutate(Attrition=ifelse(Attrition=="Yes", 1, 0))
+	mutate(
+		Attrition=ifelse(Attrition=="Yes", 1, 0)
+		)
 
 # Convert Remaing Chr Features to Factors
 factored_def <- factored_def %>%
