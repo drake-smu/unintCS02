@@ -4,22 +4,39 @@ library(tidyverse);
 hr_data_raw <- readRDS("data/hr-data.rds");
 
 # Factorize Values
-factor_Education <-  c("Below College", "College", "Bachelor", "Master", "Doctor") %>% as.factor();
-factor_EnvironmentSatisfaction <- c("Low", "Medium", "High", "Very High") %>% as.factor();
-factor_JobInvolvement <- c("Low", "Medium", "High", "Very High")%>% as.factor();
-factor_JobSatisfaction <- c("Low", "Medium", "High", "Very High")%>% as.factor();
-factor_PerformanceRating <- c("Low", "Good", "Excellent", "Outstanding")%>% as.factor();
-factor_RelationshipSatisfaction <- c("Low", "Medium", "High", "Very High")%>% as.factor();
-factor_WorkLifeBalance <- c("Bad", "Good", "Better", "Best")%>% as.factor();
+labels_Education <-  c("Below College", "College", "Bachelor", "Master", "Doctor");
+labels_EnvironmentSatisfaction <- c("Low", "Medium", "High", "Very High");
+labels_JobInvolvement <- c("Low", "Medium", "High", "Very High");
+labels_JobSatisfaction <- c("Low", "Medium", "High", "Very High");
+labels_PerformanceRating <- c("Excellent", "Outstanding");
+labels_RelationshipSatisfaction <- c("Low", "Medium", "High", "Very High");
+labels_WorkLifeBalance <- c("Bad", "Good", "Better", "Best");
 
+
+
+# Map Numerics to Labled Factors ------------------------------------------
 hr_data <- hr_data_raw %>%
 	mutate(
-		Education= factor_Education[Education],
-		EnvironmentSatisfaction= factor_EnvironmentSatisfaction[EnvironmentSatisfaction],
-		JobInvolvement=factor_JobInvolvement[JobInvolvement],
-		PerformanceRating= factor_PerformanceRating[PerformanceRating],
-		RelationshipSatisfaction=factor_RelationshipSatisfaction[RelationshipSatisfaction],
-		WorkLifeBalance=factor_WorkLifeBalance[WorkLifeBalance]
+		Education= factor(Education,labels =labels_Education),
+		EnvironmentSatisfaction= factor(EnvironmentSatisfaction, labels= labels_EnvironmentSatisfaction),
+		JobInvolvement=factor(JobInvolvement, labels= labels_JobInvolvement),
+		PerformanceRating= factor(PerformanceRating,labels =  labels_PerformanceRating),
+		RelationshipSatisfaction= factor(RelationshipSatisfaction,labels = labels_RelationshipSatisfaction),
+		WorkLifeBalance= factor(WorkLifeBalance, labels= labels_WorkLifeBalance)
 	)
 
-summary(hr_data)
+
+# General Numeric Factors -------------------------------------------------
+factored_def <- hr_data %>%
+	mutate(
+		JobLevel= as.factor(JobLevel),
+		StockOptionLevel= as.factor(StockOptionLevel),
+	);
+
+# Convert Remaing Chr Features to Factors
+factored_def <- factored_def %>%
+	mutate_if(is.character,as.factor);
+
+saveRDS(factored_def, file = "data/factored-definitions.rds");
+
+# summary(factored_def)
