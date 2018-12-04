@@ -12,12 +12,13 @@
 \date{\today}
 \begin{document}
 	<<settings, echo=FALSE, message=FALSE>>=
+library(knitr)
 library(xtable)
 library(ggplot2)
 library(coefplot)
 library(ggthemes)
 # MAKE SURE TO LOOK AT THIS FOR YOUR ROOT DIRECTORY
-knitr::opts_knit$set(root.dir = "C:/unintCS02")
+
 	opts_chunk$set(cache=T, autodep=TRUE)
 	opts_chunk$set(echo=F,message=F,warning=F)
 	opts_chunk$set(fig.width=3)
@@ -28,9 +29,9 @@ knitr::opts_knit$set(root.dir = "C:/unintCS02")
 	@
 	\setcounter{showProgressBar}{0}
 	\setcounter{showSlideNumbers}{0}
-	
+
 	\frame{\titlepage}
-	
+
 	\begin{frame}
 	\frametitle{Executive Summary}
 	\begin{enumerate}[<+->]
@@ -54,31 +55,31 @@ knitr::opts_knit$set(root.dir = "C:/unintCS02")
 	\item Check for NAs
 \end{enumerate}
 \end{frame}
-\begin{frame}
-<<r plots1, echo=F,include=F>>=
-source('C:/unintCS02/R/dWork.R')
-@
-\frametitle{Attrition}
-\only<1>{%
-	\begin{center}
-	<<r attplot,dev="tikz">>=
-	Attplot
-	 @
-	 \end{center}
+% \begin{frame}
+% <<r plots1, echo=F,include=F>>=
+% source('R/dWork.R')
+% @
+% \frametitle{Attrition}
+% \only<1>{%
+% 	\begin{center}
+% 	<<r attplot,dev="tikz">>=
+% 	Attplot
+% 	 @
+% 	 \end{center}
+% %
+% }
+% \only<2>{%
 %
-}
-\only<2>{%
-
-	<<r atttable,results='asis'>>=
-	as.data.frame(prop.table(table(raw$Attrition)))->attt
-	colnames(attt)<-c("Attrition","Proportion")
-	table1<-xtable(attt,
-	label='tb:attt',
-	
-	caption="Proportion of Attrition")
-	
-	print(table1,booktabs=T,table.placement='H')
-	@
-	}
-\end{frame}
+% 	<<r atttable,results='asis'>>=
+% 	as.data.frame(prop.table(table(raw$Attrition)))->attt
+% 	colnames(attt)<-c("Attrition","Proportion")
+% 	table1<-xtable(attt,
+% 	label='tb:attt',
+%
+% 	caption="Proportion of Attrition")
+%
+% 	print(table1,booktabs=T,table.placement='H')
+% 	@
+% 	}
+% \end{frame}
 \end{document}

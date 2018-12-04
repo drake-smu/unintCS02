@@ -7,6 +7,7 @@ library(tidyverse)
 
 factored_df <- readRDS("data/factored-definitions.rds")
 
+## @knitr bins-salary
 
 # Compare attrition rate betwen different groups of monthly income
 salary_bins = c("0-5k", "5-10k", "10-15k", "15-20k")
@@ -27,7 +28,7 @@ engr_df <- factored_df %>%
 # 						   labels=salary_bins
 # 	))
 
-
+## @knitr bins-age
 # Age Groups
 engr_df$AgeGroup <- with(engr_df, ifelse(Age > 55 , 8 , ifelse(Age > 50, 7, ifelse(
 	Age > 45, 6, ifelse(Age > 40, 5, ifelse(Age > 35, 4, ifelse(
@@ -35,7 +36,7 @@ engr_df$AgeGroup <- with(engr_df, ifelse(Age > 55 , 8 , ifelse(Age > 50, 7, ifel
 	)))
 ))))
 
-
+## @knitr bins-distance
 # Distance Bins
 engr_df$DistanceGroup <-
 	with(engr_df, ifelse(
@@ -55,6 +56,7 @@ engr_df$DistanceGroup <-
 		)
 	))
 
+## @knitr bins-mgmt
 # Years With Manager
 engr_df$YearsWithManagerGroup <-
 	with(engr_df, ifelse(
@@ -71,6 +73,7 @@ engr_df$YearsWithManagerGroup <-
 		)
 	))
 
+## @knitr bins-tenureJob
 # Tenure Per Job
 engr_df$TenurePerJob <-
 	ifelse(
@@ -84,6 +87,7 @@ engr_df$YearWithoutChange <-
 engr_df$YearsWithoutChange2 <-
 	engr_df$TotalWorkingYears - engr_df$YearsSinceLastPromotion
 
+## @knitr bins-tenureGroup
 # Tenure Groups
 engr_df$TenureGroup <-
 	with(engr_df, ifelse(TenurePerJob > 35, 9, ifelse(
@@ -95,7 +99,8 @@ engr_df$TenureGroup <-
 		))
 	)))
 
-#Creating Number of Companies Worked
+## @knitr bins-workYear
+#Creating
 engr_df$WorkYearGroup <-
 	with(engr_df, ifelse(
 		TotalWorkingYears > 35,
@@ -123,9 +128,12 @@ engr_df$WorkYearGroup <-
 		)
 	))
 
+
+## @knitr bins-compGroup
 engr_df$NumCompGroup <-
 	with(engr_df, ifelse(NumCompaniesWorked > 4, 3, ifelse(NumCompaniesWorked >
 														   	2, 2, 1)))
+## @knitr bins-Income
 
 Med_HR <-
 	median(engr_df[engr_df$Department == 'Human Resources', ]$MonthlyIncome)
@@ -236,5 +244,7 @@ engr_df$CompaDepGroup <-
 		   		)
 		   	)
 		   ))
+
+## ---
 
 saveRDS(engr_df, "data/engineered-features.rds")
