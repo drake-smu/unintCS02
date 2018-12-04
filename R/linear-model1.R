@@ -3,6 +3,7 @@ library(ggplot2)
 library(coefplot)
 library(ggthemes)
 library(dplyr)
+library(coefplot)
 
 factored_df<-readRDS("data/engineered-features.rds")
 

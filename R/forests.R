@@ -10,10 +10,8 @@ factored_df$EmployeeNumber<-NULL
 equ <-Attrition~.
 randomForest(equ,data=factored_df,importance=TRUE,
 			 ntree=2000)->VariableImportance
-vimp<-varImpPlot(VariableImportance)
 
 featured<-readRDS("data/engineered-features.rds")
 randomForest(equ,data=featured,importance=TRUE,
 			 ntree=2000)->VariableImportance2
 
-vimp2<-varImpPlot(VariableImportance2)

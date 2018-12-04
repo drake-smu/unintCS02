@@ -1,8 +1,8 @@
-#library(readxl)
-#library(pander)
-#library(caret)
-#library(ggthemes)
-
+library(readxl)
+library(pander)
+library(caret)
+library(ggthemes)
+library(ggplot2)
 
 raw<-readRDS("data/hr-data.rds")
 #(head(raw))
@@ -56,7 +56,7 @@ YearInCurrPlot <- ggplot(raw,aes(YearsInCurrentRole,fill = Attrition))+geom_bar(
 YearsSinceProm <- ggplot(raw,aes(YearsSinceLastPromotion,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Medium")
 YearsCurrManPlot <- ggplot(raw,aes(YearsWithCurrManager,fill = Attrition))+geom_bar()+theme_tufte()+scale_fill_few("Medium")
 
-#grid.arrange(marPlot,monthlyIncPlot,monthlyRatePlot,numCompPlot,hourlyPlot,jobInvPlot,jobLevelPlot,jobSatPlot,overTimePlot,hikePlot,perfPlot,RelSatPlot,StockPlot,workingYearsPlot,TrainTimesPlot,WLBPlot,YearAtComPlot,YearInCurrPlot,YearsSinceProm,YearsCurrManPlot,ncol=3,top = "okokok")
+#grid.arrange(numCompPlot,hourlyPlot,jobInvPlot,jobLevelPlot,jobSatPlot,overTimePlot,hikePlot,perfPlot,RelSatPlot,StockPlot,workingYearsPlot,TrainTimesPlot,WLBPlot,YearAtComPlot,YearInCurrPlot,YearsSinceProm,YearsCurrManPlot,ncol=3,top = "okokok")
 
 
 #grid.arrange(agePlot,travelPlot,ratePlot,depPlot,distPlot,eduPlot,edufieldPlot,envPlot,genPlot,ncol=3,top="plots")
