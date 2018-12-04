@@ -1,0 +1,260 @@
+---
+title: "Case Study 2"
+author: "Unofficial Intelligence"
+output:
+  html_document:
+    toc: true
+    number_sections: false
+    keep_md: true
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Executive Summary  
+
+##Problem and Motivation  
+
+The cost replacing an entry-level employee is 50% of that employee's salary, and
+for a supervisory role, that percentage increases as high as 150%! Within this
+notebook we explore the most predictive variables that lead to attrition and
+retain talent within DDSAnalystics Talent Management dataset. At a high level,
+we found that the four most predictive factors that lead to attrition were: over
+time, monthly income, job role and business travel. The 4 most predictive
+factors that retain talent are: work life balance, environment satisfaction,
+stock options, compensation department ratio.
+
+##Variable Explination  
+
+The explanatory variable overtime in the data set is stored as a boolean
+categorical type with  “Yes” and “No” values. The variable monthly income is
+provided as a raw continuous field that was bucketed into bins in order to
+provide more predictive power. The buckets created contain 4 levels: 0-5000,
+5000-10000, 10000-20000 and 20000-max. Job role is defined in the dataset as a
+categorical variable with 9 levels. These 9 levels range from roles like:
+“Laboratory Technician” to “Sales Executive”. Business travel is a categorical
+variable that contains 3 levels: Frequent, Rarely, and None – thus the employee
+travels often on behalf of their role, rarely on behalf of their role, or never.
+The work life balance variable is a numerical factor in which 1 represents “Bad
+Work Life Balance” and 4 represents “Best Work Life Balance”. Environment
+satisfaction is a numerical factor with variable with 4 levels: “Low Environment
+Satisfaction", "Medium Environment Satisfaction", "High Environment
+Satisfaction" , “Very High Environment Satisfaction”. Stock option benefits for
+employees are represented in the dataset as a numerical factor with 4 levels:
+0,1,2,3. The 0 refers to no stock options and the 3 refers to the greatest stock
+options. Lastly, the compensation department ratio variable is a engineered
+feature calculation that takes the raw monthly income of the employee and
+divides it by the mean monthly income of everyone in that department.
+
+##Results and Outcome  
+
+While over time, monthly income, job role, business travel lead to attrition and
+work life balance, employment satisfaction and stock options retain talent, we
+found that these specific variables only lead to an explainability of about 30%.
+In order to conduct this analysis, we built over 50 different models for EDA,
+ranging from simple linear regressions to decision trees and random forests. We
+created over 14 engineered features.  
+
+In conclusion, we found that employee retention is a difficult and complex
+problem to solve! However, there is rich and fruitful insights that can be
+gained from leveraging this dataset. In addition, we believe building and
+productionalizing an employee retention model would yield promising results and
+opens up opportunities for great savings. In order to improve model
+explainability, more data would be extremely beneficial. We also believe there
+is a lot of room for improvement with the current dataset.  
+
+##Next Steps  
+
+For variable selection and creation, with 34 explanatory variables, 2 of which
+contained no variability – we believe that more explanatory variables could
+better represent the complex environment of employee attrition. Some potential
+variables include: time series employee and company data. This would allow for
+the ability to track changes within an employee’s lifecycle and life events at
+the company. An excellent practical example of this would be big life events
+that often evoke moving: marriage and death. In addition, detailed company
+demographic variables like office location, organizational changes, news and
+press articles could show potential predictive power. Delving more into detailed
+employee demographics like health benefits, and remote working opportunities
+could help extrapolate insight into why employees leave (and stay!). Other
+useful information that could prove important is any competitor information and
+employee feedback forms!  
+
+In terms of model selection and data exploration techniques, there are always
+opportunities for more advanced dimensionality reduction techniques like KNN and
+PCA. We could also do more feature engineering with respect to oversampling
+techniques. We also would like to explore insights given by building using
+nueral networks.
+
+#Introduction  
+
+This github projct is a complilation of extensive exploratory data analysis
+regarding DDSAnalytics employee retention data. Below you will find techniques
+accumlicated over 15 weeks in Southern Methodist University Masters in Data
+Science program MSDS6306 Doing Data Science class. We were provided a single
+excel spread sheet with attrition data and asked to glean insights leveraging
+all the techniques covered throughout the semester. The goal was to create a
+final presentation in which we would showcase the insights we found. In addition
+to the presentation, we were required to create an R markdown file that would
+allow for reproducibility in the event DDSAnalytics would like to build, or
+leverage any of our findings in the future. You will find an executive summary
+providing technical insight into the results, as well as the code used to
+generate said insights. Enjoy!
+
+# Analysis  
+
+```{r load-packages, message=F, echo=F, cache=TRUE}
+library(coefplot)
+library(ggthemes)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(knitr)
+library(pander)
+library(randomForest)
+library(readxl)
+library(tidyverse)
+
+
+source("R/feature-engineering.R")
+source("R/model2r.R")
+source("R/model2r2.R")
+source("R/forests.R")
+source("R/forests2.R")
+read_chunk("R/feature-engineering.R");
+read_chunk("R/forests.R");
+read_chunk("R/linear-model1.R");
+read_chunk("R/model2R.R");
+read_chunk("R/model2R2.R");
+```
+
+
+## Process Data  
+First we need to import the client excel data and convert it into 
+more accessible R objects. 
+
+```{r process-raw,eval=F, code=readLines("../R/preprocess-data.R"), echo=-(1:2)}
+```
+
+Now that we have the data loaded we can evaluate the classes, features, and cleanness.
+
+```{r raw-structure, results='hold', collapse=TRUE}
+raw_data_df <- readRDS("data/hr-data.rds");
+raw_definitions_df <- readRDS("data/hr-definitions.rds")
+
+# Raw Data Structures
+str(raw_data_df);
+str(raw_definitions_df)
+```
+
+```{r factorize, eval=F, code=readLines("../R/factorize.R"), tidy=TRUE, tidy.opts=list(comment=T),echo=-(1:2)}
+```
+
+
+```{r , echo=FALSE}
+#Reading in hr data file
+raw<-readRDS("data/hr-data.rds")
+pander(head(raw))
+```
+```{r}
+#Turning Variables into Factors
+names <- c('WorkLifeBalance' ,'StockOptionLevel','PerformanceRating','JobSatisfaction',
+           'RelationshipSatisfaction','JobLevel','JobInvolvement','EnvironmentSatisfaction','Education')
+raw[,names] <- lapply(raw[,names] , factor)
+
+#Looking at dataset structure
+pander(str(raw))
+```
+
+## Data Investigation  
+
+### Missing Value Analysis  
+
+```{r}
+na_count <- data.frame(sapply(raw, function(y) sum(length(which(is.na(y))))))
+pander(na_count)
+```
+## Initial Modeling  
+
+### Coefficients  
+
+```{r initial-coef, eval=F}
+```
+```{r initial-coef-out, echo=F, cache=TRUE}
+cplo2
+```
+
+### Random Forest  
+
+```{r initial-forest, eval=F}
+```
+
+```{r initial-varImp, eval=F, cache=TRUE}
+varImpPlot(VariableImportance)
+```
+
+
+
+### Reduced Linear Regression  
+
+## Feature Engineering
+
+
+
+
+```{r bins-salary, eval=F, tidy=TRUE, tidy.opts=list(comment=T)}
+```
+### Age Groups  
+
+```{r bins-age, eval=F, tidy=TRUE, tidy.opts=list(comment=T)}
+```
+
+
+### Distance Groupings  
+
+```{r bins-distance, eval=F, tidy=TRUE, tidy.opts=list(comment=T)}
+```
+
+### Years With Mangager  
+
+```{r bins-mgmt, eval=F, tidy=TRUE, tidy.opts=list(comment=T)}
+```
+
+### Total Years Worked 
+
+```{r bins-workYear, eval=F, tidy=TRUE, tidy.opts=list(comment=T)}
+```
+
+### Various Income Groupings
+
+```{r bins-Income, eval=F, tidy=TRUE, tidy.opts=list(comment=T)}
+```
+
+```{r engr-str}
+str(engr_df)
+```
+
+
+
+## Updated Models  
+
+### Updated Coefficients  
+
+```{r updated-coef, eval=F}
+```
+```{r updated-coef-out, echo=F}
+cplot3
+```
+
+### Updated Random Forest  
+
+```{r updated-forest}
+```
+```{r updated-forest-out}
+varImpPlot(VariableImportance2)
+```
+
+### Updated Linear Regression  
+

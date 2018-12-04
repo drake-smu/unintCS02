@@ -1,0 +1,294 @@
+\documentclass{beamer}
+\usepackage{longtable}
+\usepackage{array,booktabs}
+\usepackage{tikz}
+\usepackage{animate}
+\usepackage{outlines}
+\usetheme{Execushares}
+\usepackage{pdfpages}
+
+\title{Exploring Employee Turnover}
+
+\subtitle{An in-depth analysis for leading causes of attrition at DDSAnalytics}
+\author{The Unofficial Intelligence Data Science Team}
+\date{\today}
+\begin{document}
+
+	<<settings, echo=FALSE, message=FALSE>>=
+library(knitr)
+library(xtable)
+library(ggplot2)
+library(coefplot)
+library(ggthemes)
+library(grid)
+library(gridExtra)
+library(pander)
+library(ggplot2)
+library(coefplot)
+library(ggthemes)
+library(dplyr)
+library(coefplot)
+# MAKE SURE TO LOOK AT THIS FOR YOUR ROOT DIRECTORY
+
+	opts_chunk$set(cache=T, autodep=TRUE)
+	opts_chunk$set(echo=F,message=F,warning=F)
+	opts_chunk$set(fig.width=3)
+	opts_chunk$set(fig.height=2.5)
+	#opts_chunk$set(background='white')
+	options(tikzDefaultEngine='xetex')
+	aniopts='controls,autoplay,loop'
+	@
+	\setcounter{showProgressBar}{0}
+	\setcounter{showSlideNumbers}{0}
+
+	\frame{\titlepage}
+
+	\begin{frame}
+	\frametitle{Introduction}
+	\begin{itemize}[<+->]
+		\item{Who are we?}
+		\begin{itemize}
+			\item Samantha Sprague - CFO (Chief Factor Operator)
+			\item David Josephs - RF (Random Forest) Engineer
+			\item Carson Drake - Data Strangler
+		\end{itemize}
+		\item What are we doing here?
+		\begin{itemize}
+			\item Fighting attrition using data science
+		\end{itemize}
+
+	\end{itemize}
+\begin{figure}
+	\includegraphics[scale=.04]{dds_logo}
+\end{figure}
+\end{frame}
+	\begin{frame}
+	\frametitle{Outline}
+	\begin{enumerate}[<+->]
+		\item Introduction
+		\item BLUF
+		\item Initial Analysis
+		\item In-Depth Analysis
+		\begin{itemize}
+			\item Linear Modeling
+			\item Random Forest
+			\item Feature Engineering
+			\item Iteration
+		\end{itemize}
+	\item Executive Summary
+	\item Moving Forward
+	\end{enumerate}
+\end{frame}
+
+	\setcounter{framenumber}{0}
+\setcounter{showProgressBar}{1}
+\setcounter{showSlideNumbers}{1}
+
+
+\section{Bottom Line Up Front}
+\begin{frame}
+\frametitle{Factors Leading to Attrition}
+Four factors:
+\begin{itemize}[<+->]
+	\item Overtime
+	\item Monthly Income
+	\item Business Travel
+	\item Job Role
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Factors Combatting Attrition}
+Four factors:
+\begin{itemize}[<+->]
+	\item Department Compa Ratio
+	\item Environment Satisfaction
+	\item Stock Options
+	\item Work-Life Balance
+\end{itemize}
+
+\end{frame}
+
+
+
+\section{Initial Analysis}
+\begin{frame}
+\frametitle{Data Manipulation}
+\begin{itemize}[<+->]
+	\item NA checking
+	\item Factorization
+	\item Enumeration
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+<<r plots1, echo=F,include=F>>=
+source('C:/unintCS02/R/dWork.R')
+@
+\frametitle{Attrition}
+\only<1>{%
+	\begin{center}
+	<<r attplot,dev="tikz">>=
+	Attplot
+	 @
+	 \end{center}
+%
+}
+\only<2>{%
+
+	<<r atttable,results='asis'>>=
+	as.data.frame(prop.table(table(raw$Attrition)))->attt
+	colnames(attt)<-c("Attrition","Proportion")
+	table1<-xtable(attt,
+	label='tb:attt',
+
+	caption="Proportion of Attrition")
+
+	print(table1,booktabs=T,table.placement='H')
+	@
+	}
+\end{frame}
+\begin{frame}{Exploratory Graphics}
+\only<1>{%
+
+	\begin{figure}
+	\begin{center}
+		<<r p11,dev='tikz'>>=
+		monthlyIncPlot
+		@
+	\end{center}
+\end{figure}
+
+	Monthly Income deserves further investigation
+}
+
+\only<2>{%
+
+	\begin{center}
+		<<r p12,dev='tikz'>>=
+		jobLevelPlot
+
+		@
+	\end{center}
+
+	Job Level seems like an important variable
+}
+\only<3>{
+\begin{center}
+	<<rovertime,dev='tikz'>>=
+	overTimePlot
+	@
+	\end{center}
+
+		As does overtime
+}
+\only<4>{%
+
+	\begin{center}
+		<<r p13,dev='tikz'>>=
+		StockPlot
+		@
+	\end{center}
+
+	Stock options seem to lower attrition
+}
+\only<5>{
+	\begin{center}
+		<<r p14,dev='tikz'>>=
+				envPlot
+		@
+	\end{center}
+
+As does a healthy working environment
+}
+\only<6>{
+	\begin{center}
+<<rwlb,dev='tikz'>>=
+WLBPlot
+@
+
+
+\end{center}
+
+Work Life Balance also appears to combat attrition
+}
+\end{frame}
+<<r source2>>=
+source("C:/unintCS02/R/linear-model1.R")
+@
+\section{In-Depth Analysis}
+\begin{frame}
+
+\frametitle{Linear Model}
+\begin{center}
+\includegraphics[scale=.4]{figure/Coefplot1.eps}
+\end{center}
+\end{frame}
+\begin{frame}
+\frametitle{Random Forests}
+<<r source3,include=F>>=
+source('C:/unintCS02/R/forests.R')
+@
+
+\begin{figure}
+\includegraphics[scale=.4]{figure/vimp11}
+\end{figure}
+\end{frame}
+\begin{frame}{Feature Engineering}
+\begin{itemize}[<+->]
+	\item Created 14 new variables
+	\begin{itemize}
+		 \item Compa Department Ratio
+	\end{itemize}
+	\item Binned many variables
+\end{itemize}
+\end{frame}
+\begin{frame}{Iteration}
+	\begin{itemize}[<+->]
+		\item Added features
+		\item Removed unimportant variables
+	\end{itemize}
+\end{frame}
+\begin{frame}{Iteration}
+\begin{figure}
+	\includegraphics[scale=.4]{figure/cplo2}
+\end{figure}
+\end{frame}
+\begin{frame}{Iteration}
+\begin{figure}
+	\includegraphics[scale=.4]{figure/cplo3}
+\end{figure}
+\end{frame}
+\section{Executive Summary and Next Steps}
+\begin{frame}
+\frametitle{Executive Summary}
+\begin{itemize}[<+->]
+	\item 8 Explanatory Variables
+	\item Explanation : $30\%$
+	\item Engineered Features : $14$
+	\item Number of models : $>50$
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{Next Steps}
+\begin{itemize}[<+->]
+	\item More Data
+	\item Time stamps
+	\item Demographic Statistics
+	\item Internal Surveys
+	\item Competitor Information
+	\item Oversampling
+	\item More Models
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Questions}
+\end{frame}
+
+
+
+\end{document}
