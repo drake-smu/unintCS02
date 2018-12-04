@@ -15,6 +15,7 @@
 \begin{document}
 
 	<<settings, echo=FALSE, message=FALSE>>=
+library(knitr)
 library(xtable)
 library(ggplot2)
 library(coefplot)
@@ -28,7 +29,7 @@ library(ggthemes)
 library(dplyr)
 library(coefplot)
 # MAKE SURE TO LOOK AT THIS FOR YOUR ROOT DIRECTORY
-knitr::opts_knit$set(root.dir = "C:/unintCS02")
+
 	opts_chunk$set(cache=T, autodep=TRUE)
 	opts_chunk$set(echo=F,message=F,warning=F)
 	opts_chunk$set(fig.width=3)
@@ -121,6 +122,7 @@ Four factors:
 	\item Enumeration
 \end{itemize}
 \end{frame}
+
 
 
 \begin{frame}
@@ -286,6 +288,7 @@ source('C:/unintCS02/R/forests.R')
 
 \begin{frame}{Questions}
 \end{frame}
-	
+
+
 
 \end{document}

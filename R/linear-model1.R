@@ -50,7 +50,7 @@ test_df <- factored_df %>%
 equ <-Attrition~.
 model1<-lm(equ,data=factored_df)
 pander(summary(model1))
-
+coefplot(model1, intercept=FALSE,vertical=FALSE)
 # coefplot(model1, intercept=FALSE,vertical=FALSE)+theme_few()
 
 model2<-lm(equ,data=test_df)
